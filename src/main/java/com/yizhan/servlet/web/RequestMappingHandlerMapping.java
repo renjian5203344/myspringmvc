@@ -5,10 +5,9 @@ import com.yizhan.annotation.Controller;
 import com.yizhan.annotation.RequestMapping;
 import com.yizhan.config.SpringMvcConfig;
 import com.yizhan.handle.HandleMethod;
-import com.yizhan.servlet.utils.ReflexUtil;
+import com.yizhan.utils.ReflexUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
