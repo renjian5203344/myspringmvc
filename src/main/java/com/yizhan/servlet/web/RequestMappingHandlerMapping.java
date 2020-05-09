@@ -18,7 +18,7 @@ public class RequestMappingHandlerMapping {
     private Map<String, HandleMethod> registry = new HashMap<>();
 
     //处理请求
-    public void initHandlerMapping(){
+    public void initHandlerMappings(){
         ComponentSacn componentSacn = SpringMvcConfig.class.getDeclaredAnnotation(ComponentSacn.class);
         String packages = componentSacn.value();
 

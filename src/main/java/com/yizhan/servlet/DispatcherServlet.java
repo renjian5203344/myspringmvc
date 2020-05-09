@@ -10,28 +10,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DispatcherServlet extends FrameworkServlet {
 
+
+public class DispatcherServlet extends FrameworkServlet {
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
-    public  DispatcherServlet(){
+
+    public DispatcherServlet() {
         requestMappingHandlerMapping = new RequestMappingHandlerMapping();
     }
 
+
     @Override
     protected void onRefresh() {
-        System.out.println("容器启动调用 DispatcherServlet类onRefresh()方法");
         initStrategies();
-
     }
 
-    private void initStrategies(){
-        requestMappingHandlerMapping.initHandlerMapping();
 
+    private void initStrategies() {
+        requestMappingHandlerMapping.initHandlerMappings();
     }
 
     @Override
     protected void doservice(HttpServletRequest req, HttpServletResponse resp) {
-        doDispatch(req,resp);
+        doDispatch(req, resp);
     }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) {
@@ -53,29 +54,22 @@ public class DispatcherServlet extends FrameworkServlet {
         }
     }
 
-
-
-
     public void render(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String viewName = modelAndView.getViewName();
         req.getRequestDispatcher("/WEB-INF/view/" + viewName + ".jsp").forward(req, resp);
     }
 
-    private HandlerExecutionChain getHandler(String url){
-        HandleMethod handleMethod = requestMappingHandlerMapping.getHandlerMethod(url);
-        if (handleMethod == null){
+    private HandlerExecutionChain getHandler(String url) {
+        HandleMethod handlerMethod = requestMappingHandlerMapping.getHandlerMethod(url);
+        if (handlerMethod == null) {
             return null;
         }
-
-        HandlerExecutionChain handlerExecutionChain = new HandlerExecutionChain(handleMethod);
+        HandlerExecutionChain handlerExecutionChain = new HandlerExecutionChain(handlerMethod);
         return handlerExecutionChain;
-
     }
 
     protected void noHandlerFound(HttpServletRequest request, HttpServletResponse response) throws Exception {
         throw new Exception("没有查找到对应的请求");
     }
-
-
-
 }
+
