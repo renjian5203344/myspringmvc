@@ -14,10 +14,21 @@ import java.util.jar.JarFile;
 
 //反射工具类
 public class ReflexUtil {
+
+    public static void main(String[] args) {
+       Set<Class<?>> set = getClasses("com.yizhan.controller");
+       for (Class c :set){
+           System.out.println(c.getName());
+       }
+    }
+
+
+
+
     public static Set<Class<?>> getClasses(String packages) {
         Set<Class<?>> classes = new LinkedHashSet<>();
         String packageName = packages;
-        String packageDir = packageName.replace(".","/");
+        String packageDir = packageName.replace(".","/"); //com.yizhan.controller-> com/yizhan/controller
          //获取包的名字并替换
         //定义一个枚举集合，并循环来处理这个目录下的文件
         Enumeration<URL> dirs;
@@ -27,14 +38,14 @@ public class ReflexUtil {
 
 
         try {
-            dirs = Thread.currentThread().getContextClassLoader().getResources(packageName);
+            dirs = Thread.currentThread().getContextClassLoader().getResources(packageDir);
             while (dirs.hasMoreElements()){//获取文件夹里面所有元素
                 URL url = dirs.nextElement();//获取下一个元素
                 String protocal = url.getProtocol();//获取协议名称
-                if("fill".equals(protocal)){
+                if("file".equals(protocal)){
                     System.out.println("file类型扫描");
                     //获取物理包路径
-                    String filepath = URLDecoder.decode(url.getFile(),"utf-8");//filepath为物理路径
+                    String filepath = URLDecoder.decode(url.getFile(),"UTF-8");//filepath为物理路径
                     findAndClassInpackageByFile(packageName,filepath,recursive,classes);
 
                 }else if ("jar".equals(protocal)){
@@ -56,7 +67,7 @@ public class ReflexUtil {
                             if (idx != -1){
                                 packageName = name.substring(0,idx).replace('/','.');
                             }
-                            if (idx != -1 || recursive){
+                            if ((idx != -1) || recursive){
                                 if (name.endsWith(".class") && !entry.isDirectory()){
                                     String className = name.substring(packageName.length()+1,name.length()-6);
                                     try {
@@ -82,13 +93,13 @@ public class ReflexUtil {
         }
 
 
-        return null;
+        return classes;
     }
 
     private static void findAndClassInpackageByFile(String packageName, String filepath, boolean recursive, Set<Class<?>> classes) {
     //获取此包的目录
         File dir = new File(filepath);
-        if (!dir.exists() ||!dir.isDirectory()){
+        if (!dir.exists() || !dir.isDirectory()){
             return;
 
         }
@@ -96,7 +107,7 @@ public class ReflexUtil {
         File[] dirfiles = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                return (recursive&& file.isDirectory()) ||file.getName().endsWith(".class");
+                return (recursive && file.isDirectory()) ||(file.getName().endsWith(".class"));
             }
         });
 
