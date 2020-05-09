@@ -10,10 +10,10 @@ public class IndexController {
     //127.0.0.1:8080/index（url）--indexController.index()
 
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String test(){
 
-        return "test";
+        return "index";
 
     }
 }

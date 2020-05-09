@@ -13,7 +13,7 @@ public class AbstractDispatcherServletInitializer implements WebApplicationIniti
 
         //1. 开始注册我们的dispatcherServlet
         ServletRegistration.Dynamic dispatcherServlet = servletContext.addServlet("dispatcherServlet",new DispatcherServlet());
-        dispatcherServlet.addMapping("/*");//拦截所有的请求
+        dispatcherServlet.addMapping("/");//拦截所有的请求
 
 
     }
